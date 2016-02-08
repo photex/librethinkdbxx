@@ -10,8 +10,8 @@ namespace RethinkDB {
 // All errors thrown by the server have this type
 struct Error {
     template <class ...T>
-    explicit Error(const char* format_, T... A) {
-        format(format_, A...);
+    explicit Error(std::string format_, T... A) {
+        format(format_.c_str(), A...);
     }
 
     Error() = default;
@@ -39,7 +39,7 @@ private:
         char message_[max_message_size];
         vsnprintf(message_, max_message_size, format_, args);
         va_end(args);
-        message = message_;
+        message = std::move(std::string(message_));
     }
 };
 

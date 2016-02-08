@@ -106,7 +106,7 @@ Connection::Connection(const std::string& host, int port, const std::string& aut
         size_t size = auth_key.size();
         char buf[12 + size];
         memcpy(buf, &version_magic, 4);
-        uint32_t n = size;
+        size_t n = size;
         memcpy(buf + 4, &n, 4);
         memcpy(buf + 8, auth_key.data(), size);
         memcpy(buf + 8 + size, &json_magic, 4);
@@ -172,7 +172,7 @@ void Connection::WriteLock::send(const std::string data) {
 std::string Connection::ReadLock::recv(size_t size) {
     char buf[size];
     recv(buf, size);
-    return buf;
+    return std::string(buf);
 }
 
 void Connection::close() {
@@ -319,7 +319,7 @@ void Connection::WriteLock::send_query(uint64_t token, const std::string& query)
     if (debug_net > 0) fprintf(stderr, "[%llu] >> %s\n", token, query.c_str());
     char buf[12];
     memcpy(buf, &token, 8);
-    uint32_t size = query.size();
+    size_t size = query.size();
     memcpy(buf + 8, &size, 4);
     send(buf, 12);
     send(query);

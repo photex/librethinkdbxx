@@ -72,7 +72,7 @@ private:
         std::queue<Response> responses;
     };
 
-    std::map<uint32_t, TokenCache> guarded_cache;
+    std::map<uint64_t, TokenCache> guarded_cache;
     uint64_t guarded_next_token;
     int guarded_sockfd;
     bool guarded_loop_active;
