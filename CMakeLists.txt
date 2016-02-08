@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.2)
 
 project(rethinkdbxx CXX)
 
@@ -22,6 +22,11 @@ execute_process(
 )
 
 configure_file(src/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
+set(GENERATED_HEADERS
+  ${CMAKE_CURRENT_BINARY_DIR}/config.h
+  ${CMAKE_CURRENT_BINARY_DIR}/protocol_defs.h
+  )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -56,4 +61,15 @@ set_target_properties(rethinkdbxx
   PROPERTIES
   CXX_STANDARD 14
   CXX_STANDARD_REQUIRED ON
+  )
+
+install(TARGETS rethinkdbxx
+  INCLUDES DESTINATION include
+  ARCHIVE DESTINATION lib
+  )
+install(FILES
+  src/rethinkdb.hpp
+  ${LIB_HEADERS}
+  ${GENERATED_HEADERS}
+  DESTINATION include
   )
