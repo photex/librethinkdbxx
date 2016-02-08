@@ -30,12 +30,6 @@ if (${PYTHON_MAJOR_VERSION} MATCHES "2")
 endif()
 message(STATUS "Using Python Executable: ${PYTHON_EXECUTABLE}")
 
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/reql/gen.py ${CMAKE_CURRENT_SOURCE_DIR}/reql/ql2.proto
-  OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/protocol_defs.h
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(USE_XLOCALE_H ON)
 else()
@@ -43,9 +37,13 @@ else()
 endif()
 configure_file(src/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
+find_package(Protobuf REQUIRED)
+find_package(Threads REQUIRED)
+
+protobuf_generate_cpp(REQL_SOURCES REQL_HEADERS reql/ql2.proto)
+
 set(GENERATED_HEADERS
   ${CMAKE_CURRENT_BINARY_DIR}/config.h
-  ${CMAKE_CURRENT_BINARY_DIR}/protocol_defs.h
   )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -75,10 +73,16 @@ set(LIB_HEADERS
 
 add_library(rethinkdbxx STATIC
   ${LIB_HEADERS}
+  ${REQL_HEADERS}
   ${LIB_SOURCES}
+  ${REQL_SOURCES}
   )
 target_include_directories(rethinkdbxx
   INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_BINARY_DIR}
+  )
+target_link_libraries(rethinkdbxx
+  ${PROTOBUF_LIBRARIES}
+  ${CMAKE_THREAD_LIBS_INIT}
   )
 set_target_properties(rethinkdbxx
   PROPERTIES
