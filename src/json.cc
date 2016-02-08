@@ -1,6 +1,12 @@
+#include "config.h"
 
 #include <cstring>
+
+#include <cstdlib>
 #include <locale.h>
+#ifdef USE_XLOCALE_H
+#include <xlocale.h>
+#endif
 
 #include "json.h"
 #include "error.h"

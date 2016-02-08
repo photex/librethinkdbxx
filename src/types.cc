@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "types.h"
 #include "error.h"
 
