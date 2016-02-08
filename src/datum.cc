@@ -6,7 +6,7 @@
 
 namespace RethinkDB {
 
-using TT = Protocol::Term::TermType;
+using TT = Term_TermType;
 
 bool Datum::is_nil() const {
     return type == Type::NIL;

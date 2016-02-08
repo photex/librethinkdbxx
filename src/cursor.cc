@@ -147,25 +147,24 @@ void Cursor::add_results(Array&& results) const {
 }
 
 void Cursor::add_response(Response&& response) const {
-    using RT = Protocol::Response::ResponseType;
     switch (response.type) {
-    case RT::SUCCESS_SEQUENCE:
+    case Response_ResponseType_SUCCESS_SEQUENCE:
         add_results(std::move(response.result));
         no_more = true;
         break;
-    case RT::SUCCESS_PARTIAL:
+    case Response_ResponseType_SUCCESS_PARTIAL:
         token.ask_for_more();
         add_results(std::move(response.result));
         break;
-    case RT::SUCCESS_ATOM:
+    case Response_ResponseType_SUCCESS_ATOM:
         add_results(std::move(response.result));
         single = true;
         no_more = true;
         break;
-    case RT::WAIT_COMPLETE:
-    case RT::CLIENT_ERROR:
-    case RT::COMPILE_ERROR:
-    case RT::RUNTIME_ERROR:
+    case Response_ResponseType_WAIT_COMPLETE:
+    case Response_ResponseType_CLIENT_ERROR:
+    case Response_ResponseType_COMPILE_ERROR:
+    case Response_ResponseType_RUNTIME_ERROR:
         no_more = true;
         throw response.as_error();
     }

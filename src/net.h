@@ -17,7 +17,7 @@ class Connection;
 class ResponseBuffer;
 
 // Used internally to convert a raw response type into an enum
-Protocol::Response::ResponseType response_type(double t);
+Response_ResponseType response_type(double t);
 
 // Contains a response from the server. Use the Cursor class to interact with these responses
 class Response {
@@ -26,7 +26,7 @@ public:
         type(response_type(std::move(datum).extract_field("t").extract_number())),
         result(std::move(datum).extract_field("r").extract_array()) { }
     Error as_error();
-    Protocol::Response::ResponseType type;
+    Response_ResponseType type;
     Array result;
 };
 
@@ -55,8 +55,8 @@ private:
     friend class ResponseBuffer;
     friend class Token;
 
-    const uint32_t version_magic = static_cast<uint32_t>(Protocol::VersionDummy::Version::V0_4);
-    const uint32_t json_magic = static_cast<uint32_t>(Protocol::VersionDummy::Protocol::JSON);
+    const uint32_t version_magic = static_cast<uint32_t>(VersionDummy_Version_V0_4);
+    const uint32_t json_magic = static_cast<uint32_t>(VersionDummy_Protocol_JSON);
 
     class ReadLock;
     class WriteLock;

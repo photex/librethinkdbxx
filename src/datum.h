@@ -60,7 +60,7 @@ public:
     Datum(uint64_t number_) : Datum(static_cast<double>(number_)) { }
     Datum(int32_t number_) : Datum(static_cast<double>(number_)) { }
     Datum(int64_t number_) : Datum(static_cast<double>(number_)) { }
-    Datum(Protocol::Term::TermType type) : Datum(static_cast<double>(type)) { }
+    Datum(Term_TermType type) : Datum(static_cast<double>(type)) { }
     Datum(const char* string) : Datum(static_cast<std::string>(string)) { }
 
     // Cursors are implicitly converted into datums
