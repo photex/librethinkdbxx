@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 
 project(rethinkdbxx CXX)
 
+option(ENABLE_TESTS OFF)
+
 set(CMAKE_CXX_FLAGS "-Wall -fPIC")
 set(CMAKE_CXX_FLAGS_MINSIZEREL "-flto")
 
@@ -73,3 +75,22 @@ install(FILES
   ${GENERATED_HEADERS}
   DESTINATION include
   )
+
+if (ENABLE_TESTS)
+  enable_testing()
+
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+  include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+  add_executable(test_connection "test/connection.cpp")
+  target_link_libraries(test_connection rethinkdbxx)
+  set_target_properties(test_connection
+    PROPERTIES
+    CXX_STANDARD 14
+    CXX_STANDARD_REQUIRED ON
+    )
+
+  add_test(RethinkDBXX_Tests
+    test_connection
+    )
+endif()
