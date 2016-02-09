@@ -43,7 +43,7 @@ void test_cursor() {
     R::Cursor cursor = R::range(10000).run(*conn);
     TEST_EQ(cursor.next(), 0);
     R::Array array = cursor.to_array();
-    TEST_EQ(array.size(), 9999);
+    TEST_EQ(static_cast<uint64_t>(array.size()), 9999);
     TEST_EQ(*array.begin(), 1);
     TEST_EQ(*array.rbegin(), 9999);
     int i = 0;

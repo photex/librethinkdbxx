@@ -1,0 +1,6 @@
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(example_connection connection.cpp)
+target_link_libraries(example_connection rethinkdbxx)
+set_target_properties(example_connection PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)

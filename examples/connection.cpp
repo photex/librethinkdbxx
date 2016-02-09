@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include <rethinkdb.hpp>
+#include <rethinkdb.h>
 
 namespace R = RethinkDB;
 
